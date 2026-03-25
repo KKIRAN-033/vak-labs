@@ -1,0 +1,155 @@
+{
+  "project_name": "Telecom Forensic AI Chatbot",
+  "theme_strategy": {
+    "mode": "dark",
+    "emotional_archetype": "The Performance Pro",
+    "description": "Elite athleticism, precision, command-center focus. Tactical minimalism.",
+    "background_strategy": "Deep Obsidian (#09090b) - NOT pure black",
+    "surface_strategy": "Matte finish with subtle 1px borders"
+  },
+  "typography": {
+    "font_family_heading": "Inter, system-ui, sans-serif",
+    "font_family_body": "Inter, system-ui, sans-serif",
+    "font_family_code": "JetBrains Mono, monospace",
+    "scaling": {
+      "h1": "text-4xl font-bold tracking-tight",
+      "h2": "text-2xl font-semibold tracking-tight",
+      "h3": "text-xl font-medium tracking-normal",
+      "body": "text-sm leading-relaxed",
+      "small": "text-xs text-muted-foreground",
+      "mono": "font-mono text-xs tracking-wide"
+    }
+  },
+  "colors": {
+    "palette": {
+      "background": "#09090b",
+      "foreground": "#fafafa",
+      "card": "#18181b",
+      "card_foreground": "#fafafa",
+      "popover": "#18181b",
+      "popover_foreground": "#fafafa",
+      "primary": "#3b82f6",
+      "primary_foreground": "#fafafa",
+      "secondary": "#27272a",
+      "secondary_foreground": "#fafafa",
+      "muted": "#27272a",
+      "muted_foreground": "#a1a1aa",
+      "accent": "#27272a",
+      "accent_foreground": "#fafafa",
+      "destructive": "#ef4444",
+      "destructive_foreground": "#fafafa",
+      "border": "#27272a",
+      "input": "#27272a",
+      "ring": "#3b82f6"
+    },
+    "chart_colors": {
+      "chart_1": "#3b82f6",
+      "chart_2": "#10b981",
+      "chart_3": "#f59e0b",
+      "chart_4": "#ef4444",
+      "chart_5": "#8b5cf6"
+    },
+    "functional_colors": {
+      "success": "#10b981",
+      "warning": "#f59e0b",
+      "error": "#ef4444",
+      "info": "#3b82f6",
+      "suspicious": "#ef4444",
+      "safe": "#10b981"
+    }
+  },
+  "layout_structure": {
+    "type": "Three-Panel Dashboard",
+    "container_style": "h-screen w-full bg-background overflow-hidden flex",
+    "panels": {
+      "left_panel": {
+        "width": "w-64",
+        "role": "File Upload & Dataset Management",
+        "style": "border-r border-border bg-card/50 p-4 flex flex-col gap-4"
+      },
+      "center_panel": {
+        "width": "flex-1",
+        "role": "Data Preview & Analysis Dashboard",
+        "style": "flex flex-col overflow-hidden bg-background relative"
+      },
+      "right_panel": {
+        "width": "w-80",
+        "role": "AI Chatbot Assistant",
+        "style": "border-l border-border bg-card/50 flex flex-col"
+      }
+    }
+  },
+  "components": {
+    "buttons": {
+      "default": "rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+      "primary": "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+      "secondary": "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+      "ghost": "hover:bg-accent hover:text-accent-foreground",
+      "outline": "border border-input bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground"
+    },
+    "cards": {
+      "style": "rounded-lg border bg-card text-card-foreground shadow-sm",
+      "header": "flex flex-col space-y-1.5 p-6",
+      "content": "p-6 pt-0"
+    },
+    "tables": {
+      "style": "w-full caption-bottom text-sm",
+      "header_row": "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
+      "cell": "p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+    },
+    "inputs": {
+      "style": "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": {
+      "use_case": "Overlays, sticky headers, toast notifications",
+      "classes": "bg-background/80 backdrop-blur-md border-b border-border/50"
+    },
+    "grid_borders": {
+      "use_case": "Dashboard metrics, data tables",
+      "classes": "border border-border/40"
+    },
+    "micro_interactions": {
+      "hover": "transition-all duration-200 ease-in-out hover:bg-accent/50",
+      "active": "active:scale-95"
+    }
+  },
+  "icons": {
+    "library": "lucide-react",
+    "style": "stroke-1.5",
+    "mapping": {
+      "upload": "UploadCloud",
+      "file": "FileText",
+      "analysis": "BarChart3",
+      "chat": "MessageSquare",
+      "settings": "Settings",
+      "alert": "AlertTriangle",
+      "user": "User",
+      "search": "Search",
+      "dataset_cdr": "PhoneCall",
+      "dataset_ipdr": "Globe",
+      "dataset_tower": "RadioReceiver"
+    }
+  },
+  "universal_guidelines": [
+    "Use solid colors over gradients for backgrounds to maintain a 'tactical' look.",
+    "Ensure all text has sufficient contrast (WCAG AA).",
+    "Do not use generic 'AI' emojis.",
+    "Use 'JetBrains Mono' for all data values (IPs, Phone Numbers, Timestamps).",
+    "Interactive elements must have hover and focus states.",
+    "Use generous padding (p-4, p-6) inside cards to avoid clutter.",
+    "Scrollbars should be thin and customized to match the dark theme.",
+    "No 'AI slop' - keep designs sharp, purposeful, and aligned.",
+    "For the map visualization, use a dark mode map style (e.g., CartoDB Dark Matter) if using a library, or a stylized SVG map."
+  ],
+  "instructions_to_main_agent": {
+    "step_1": "Setup the 3-panel layout in App.js using the defined layout structure.",
+    "step_2": "Customize tailwind.config.js with the provided color palette.",
+    "step_3": "Create a 'Dashboard' component that orchestrates the Upload, Analysis, and Chat modules.",
+    "step_4": "Use 'recharts' for data visualization (BarChart, LineChart) in the Center Panel.",
+    "step_5": "Implement the Chatbot UI in the Right Panel using a scrollable message area and a fixed input area.",
+    "step_6": "Ensure responsive design: Stack panels on mobile (Left -> Center -> Right).",
+    "step_7": "Use 'lucide-react' for all icons."
+  }
+}
