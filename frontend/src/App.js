@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
 import "./App.css";
-import UploadPanel from "@/components/UploadPanel";
-import AnalysisPanel from "@/components/AnalysisPanel";
-import ChatPanel from "@/components/ChatPanel";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import UploadPanel from "./components/UploadPanel";
+import AnalysisPanel from "./components/AnalysisPanel";
+import ChatPanel from "./components/ChatPanel";
+import { TooltipProvider } from "./components/ui/tooltip";
 import { Shield, Radio } from "lucide-react";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
