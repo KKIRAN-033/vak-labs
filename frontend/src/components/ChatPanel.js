@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Card } from "./components/ui/card";
-import { Button } from "./components/ui/button";
-import { Badge } from "./components/ui/badge";
-import { ScrollArea } from "./components/ui/scroll-area";
+import { Card } from "./ui/card";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+import { ScrollArea } from "./ui/scroll-area";
 import {
   MessageSquare,
   Send,
