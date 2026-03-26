@@ -10,7 +10,7 @@ import {
   TableRow,
   TableHead,
   TableCell,
-} from "@/components/ui/table";
+} from "./ui/table";
 import {
   BarChart3,
   Users,
