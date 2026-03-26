@@ -81,8 +81,21 @@ def normalize_records(df: pd.DataFrame, dataset_type: str) -> List[Dict]:
     for _, row in df.iterrows():
         rec = {}
         if dataset_type == 'CDR':
-            rec['source'] = str(row.get(cols_lower.get('caller', cols_lower.get('calling', cols_lower.get('a_party', cols_lower.get('msisdn', '')))), ''))
-            rec['target'] = str(row.get(cols_lower.get('receiver', cols_lower.get('called', cols_lower.get('b_party', ''))), ''))
+            caller_col = None
+            receiver_col = None
+
+            for key in ['caller_number', 'caller', 'calling', 'a_party', 'msisdn']:
+                if key in cols_lower:
+                    caller_col = cols_lower[key]
+                    break
+
+            for key in ['receiver_number', 'receiver', 'called', 'b_party']:
+                if key in cols_lower:
+                    receiver_col = cols_lower[key]
+                    break
+
+            rec['source'] = str(row[caller_col]) if caller_col else ''
+            rec['target'] = str(row[receiver_col]) if receiver_col else ''
             ts_col = cols_lower.get('timestamp', cols_lower.get('datetime', cols_lower.get('date', cols_lower.get('call_time', cols_lower.get('start_time', '')))))
             rec['timestamp'] = str(row.get(ts_col, '')) if ts_col else ''
             rec['type'] = 'CDR'
@@ -90,8 +103,21 @@ def normalize_records(df: pd.DataFrame, dataset_type: str) -> List[Dict]:
             rec['cell_id'] = str(row.get(cols_lower.get('cell_id', cols_lower.get('tower_id', cols_lower.get('cell_tower', ''))), ''))
 
         elif dataset_type == 'IPDR':
-            rec['source'] = str(row.get(cols_lower.get('source_ip', cols_lower.get('src_ip', cols_lower.get('ip_address', cols_lower.get('ip', '')))), ''))
-            rec['target'] = str(row.get(cols_lower.get('dest_ip', cols_lower.get('destination_ip', cols_lower.get('dst_ip', cols_lower.get('url', cols_lower.get('domain', ''))))), ''))
+            src_col = None
+            dst_col = None
+
+            for key in ['source_ip', 'src_ip', 'ip_address', 'ip']:
+                if key in cols_lower:
+                    src_col = cols_lower[key]
+                    break
+
+            for key in ['dest_ip', 'destination_ip', 'dst_ip', 'url', 'domain']:
+                if key in cols_lower:
+                    dst_col = cols_lower[key]
+                    break
+
+            rec['source'] = str(row[src_col]) if src_col else ''
+            rec['target'] = str(row[dst_col]) if dst_col else ''    
             ts_col = cols_lower.get('timestamp', cols_lower.get('datetime', cols_lower.get('date', cols_lower.get('start_time', ''))))
             rec['timestamp'] = str(row.get(ts_col, '')) if ts_col else ''
             rec['type'] = 'IPDR'
@@ -99,8 +125,21 @@ def normalize_records(df: pd.DataFrame, dataset_type: str) -> List[Dict]:
             rec['port'] = str(row.get(cols_lower.get('port', cols_lower.get('dest_port', '')), ''))
 
         elif dataset_type == 'TOWER':
-            rec['source'] = str(row.get(cols_lower.get('msisdn', cols_lower.get('phone', cols_lower.get('imsi', cols_lower.get('subscriber', '')))), ''))
-            rec['target'] = str(row.get(cols_lower.get('cell_id', cols_lower.get('tower_id', cols_lower.get('cell_tower', cols_lower.get('tower', '')))), ''))
+            user_col = None
+            tower_col = None
+
+            for key in ['msisdn', 'phone', 'imsi', 'subscriber']:
+                if key in cols_lower:
+                    user_col = cols_lower[key]
+                    break
+
+            for key in ['cell_id', 'tower_id', 'cell_tower', 'tower']:
+                if key in cols_lower:
+                    tower_col = cols_lower[key]
+                    break
+
+            rec['source'] = str(row[user_col]) if user_col else ''
+            rec['target'] = str(row[tower_col]) if tower_col else ''
             ts_col = cols_lower.get('timestamp', cols_lower.get('datetime', cols_lower.get('date', cols_lower.get('start_time', ''))))
             rec['timestamp'] = str(row.get(ts_col, '')) if ts_col else ''
             rec['type'] = 'TOWER'
