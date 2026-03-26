@@ -83,7 +83,7 @@ if (!res.ok) {
         }, 500);
       }
     },
-    [apiUrl, onDatasetUploaded]
+    [apiUrl, onDatasetUploaded,fetchDatasets]
   );
 
   const handleDrop = useCallback(
