@@ -84,15 +84,13 @@ def normalize_records(df: pd.DataFrame, dataset_type: str) -> List[Dict]:
             caller_col = None
             receiver_col = None
 
-            for key in ['caller_number', 'caller', 'calling', 'a_party', 'msisdn']:
-                if key in cols_lower:
-                    caller_col = cols_lower[key]
-                    break
+            for col in df.columns:
+                col_clean = col.lower().strip()
 
-            for key in ['receiver_number', 'receiver', 'called', 'b_party']:
-                if key in cols_lower:
-                    receiver_col = cols_lower[key]
-                    break
+                if 'caller' in col_clean or 'calling' in col_clean:
+                    caller_col = col
+                elif 'receiver' in col_clean or 'called' in col_clean:
+                    receiver_col = col
 
             rec['source'] = str(row[caller_col]) if caller_col else ''
             rec['target'] = str(row[receiver_col]) if receiver_col else ''
@@ -106,15 +104,13 @@ def normalize_records(df: pd.DataFrame, dataset_type: str) -> List[Dict]:
             src_col = None
             dst_col = None
 
-            for key in ['source_ip', 'src_ip', 'ip_address', 'ip']:
-                if key in cols_lower:
-                    src_col = cols_lower[key]
-                    break
+            for col in df.columns:
+                col_clean = col.lower().strip()
 
-            for key in ['dest_ip', 'destination_ip', 'dst_ip', 'url', 'domain']:
-                if key in cols_lower:
-                    dst_col = cols_lower[key]
-                    break
+                if 'source' in col_clean or 'src' in col_clean or 'ip' in col_clean:
+                    src_col = col
+                elif 'dest' in col_clean or 'dst' in col_clean or 'destination' in col_clean or 'domain' in col_clean:
+                    dst_col = col
 
             rec['source'] = str(row[src_col]) if src_col else ''
             rec['target'] = str(row[dst_col]) if dst_col else ''    
@@ -128,15 +124,13 @@ def normalize_records(df: pd.DataFrame, dataset_type: str) -> List[Dict]:
             user_col = None
             tower_col = None
 
-            for key in ['msisdn', 'phone', 'imsi', 'subscriber']:
-                if key in cols_lower:
-                    user_col = cols_lower[key]
-                    break
+            for col in df.columns:
+                col_clean = col.lower().strip()
 
-            for key in ['cell_id', 'tower_id', 'cell_tower', 'tower']:
-                if key in cols_lower:
-                    tower_col = cols_lower[key]
-                    break
+                if 'msisdn' in col_clean or 'phone' in col_clean or 'imsi' in col_clean:
+                    user_col = col
+                elif 'cell' in col_clean or 'tower' in col_clean:
+                    tower_col = col
 
             rec['source'] = str(row[user_col]) if user_col else ''
             rec['target'] = str(row[tower_col]) if tower_col else ''
