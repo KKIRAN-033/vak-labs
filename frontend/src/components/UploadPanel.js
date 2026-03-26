@@ -55,6 +55,8 @@ export default function UploadPanel({
       setUploading(true);
       setUploadProgress(20);
 
+      const apiUrl="https://vak-labs.onrender.com"
+      
       const formData = new FormData();
       formData.append("file", file);
 
