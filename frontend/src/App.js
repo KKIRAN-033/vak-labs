@@ -6,9 +6,10 @@ import ChatPanel from \"./components/ChatPanel\";
 import { TooltipProvider } from \"./components/ui/tooltip\";
 import { Shield, Radio } from \"lucide-react\";
 
-// Use environment variable OR fallback to Render URL
+// IMPORTANT: Set REACT_APP_BACKEND_URL in Vercel environment variables
+// Example: https://vak-labs.onrender.com
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || \"https://vak-labs.onrender.com\";
-// IMPORTANT: All backend routes use /api prefix
+// All backend routes use /api prefix
 const API = `${BACKEND_URL}/api`;
 
 function App() {
@@ -31,9 +32,7 @@ function App() {
   const fetchAnalysis = useCallback(async (datasetId = null) => {
     setLoading(true);
     try {
-      const url = datasetId
-        ? `${API}/analyze/${datasetId}`
-        : `${API}/analyze`;
+      const url = datasetId ? `${API}/analyze/${datasetId}` : `${API}/analyze`;
       const res = await fetch(url);
       if (!res.ok) throw new Error(\"Failed to analyze\");
       const data = await res.json();
@@ -55,7 +54,6 @@ function App() {
     fetchAnalysis(ds?.id || null);
   }, [fetchAnalysis]);
 
-  // Load datasets on mount
   useEffect(() => {
     fetchDatasets();
   }, [fetchDatasets]);
@@ -63,7 +61,6 @@ function App() {
   return (
     <TooltipProvider>
       <div className=\"h-screen w-full bg-background overflow-hidden flex flex-col\" data-testid=\"app-root\">
-        {/* Header */}
         <header className=\"h-12 border-b border-border/60 bg-card/80 backdrop-blur-md flex items-center px-4 gap-3 shrink-0\" data-testid=\"app-header\">
           <div className=\"flex items-center gap-2\">
             <Shield className=\"h-5 w-5 text-primary\" strokeWidth={1.5} />
@@ -77,26 +74,10 @@ function App() {
           </div>
         </header>
 
-        {/* Main Content - 3 Panel Layout */}
         <div className=\"flex flex-1 overflow-hidden\">
-          <UploadPanel
-            datasets={datasets}
-            selectedDataset={selectedDataset}
-            onSelectDataset={onSelectDataset}
-            onDatasetUploaded={onDatasetUploaded}
-            fetchDatasets={fetchDatasets}
-            apiUrl={API}
-          />
-          <AnalysisPanel
-            analysisData={analysisData}
-            selectedDataset={selectedDataset}
-            loading={loading}
-            apiUrl={API}
-          />
-          <ChatPanel
-            apiUrl={API}
-            selectedDataset={selectedDataset}
-          />
+          <UploadPanel datasets={datasets} selectedDataset={selectedDataset} onSelectDataset={onSelectDataset} onDatasetUploaded={onDatasetUploaded} fetchDatasets={fetchDatasets} apiUrl={API} />
+          <AnalysisPanel analysisData={analysisData} selectedDataset={selectedDataset} loading={loading} apiUrl={API} />
+          <ChatPanel apiUrl={API} selectedDataset={selectedDataset} />
         </div>
       </div>
     </TooltipProvider>
