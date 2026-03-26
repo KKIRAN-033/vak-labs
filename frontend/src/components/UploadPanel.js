@@ -65,14 +65,10 @@ export default function UploadPanel({
   body: formData,
 });
 
-let data;
-try {
-  data = await res.json(); // ✅ read ONLY once
-} catch {
-  data = null;
-}
 
+ const data = await res.json();
 if (!res.ok) {
+  console.error("backend:",data)
   throw new Error(data?.detail || "Upload failed");
 }
 
