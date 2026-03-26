@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
-import \"./App.css\";
+import "./App.css";
 import UploadPanel from "./components/UploadPanel";
 import AnalysisPanel from "./components/AnalysisPanel";
-import ChatPanel from \"./components/ChatPanel\";
+import ChatPanel from "./components/ChatPanel";
 import { TooltipProvider } from "./components/ui/tooltip";
 import { Shield, Radio } from "lucide-react";
 
@@ -21,7 +21,7 @@ function App() {
   const fetchDatasets = useCallback(async () => {
     try {
       const res = await fetch(`${API}/datasets`);
-      if (!res.ok) throw new Error(\"Failed to fetch\");
+      if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setDatasets(data);
     } catch (e) {
@@ -68,13 +68,13 @@ function App() {
           </div>
           <div className="h-4 w-px bg-border mx-1" />
           <span className="text-xs text-muted-foreground">Investigation Dashboard</span>
-          <div className="ml-auto flex items-center gap-2"/>
+          <div className="ml-auto flex items-center gap-2">
             <Radio className="h-3.5 w-3.5 text-emerald-500" />
             <span className="text-xs text-muted-foreground font-mono">SYSTEM ONLINE</span>
           </div>
         </header>
 
-        <div className="flex flex-1 overflow-hidden"/>
+        <div className="flex flex-1 overflow-hidden">
           <UploadPanel datasets={datasets} selectedDataset={selectedDataset} onSelectDataset={onSelectDataset} onDatasetUploaded={onDatasetUploaded} fetchDatasets={fetchDatasets} apiUrl={API} />
           <AnalysisPanel analysisData={analysisData} selectedDataset={selectedDataset} loading={loading} apiUrl={API} />
           <ChatPanel apiUrl={API} selectedDataset={selectedDataset} />
