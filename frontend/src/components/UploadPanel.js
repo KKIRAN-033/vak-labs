@@ -100,7 +100,7 @@ if (!res.ok) {
     async (e, id) => {
       e.stopPropagation();
       try {
-        await fetch(`${apiUrl}/api/datasets/${id}`, { method: "DELETE" });
+        await fetch(`${apiUrl}/api/datasets/${id}`, { method: "GET" });
         if (selectedDataset?.id === id) onSelectDataset(null);
         setUploadProgress(100);
         await fetchDatasets();
