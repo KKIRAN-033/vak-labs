@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import "@/App.css";
+import "./App.css";
 import UploadPanel from "@/components/UploadPanel";
 import AnalysisPanel from "@/components/AnalysisPanel";
 import ChatPanel from "@/components/ChatPanel";
