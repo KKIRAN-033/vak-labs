@@ -60,7 +60,7 @@ export default function UploadPanel({
 
       try {
         setUploadProgress(50);
-        const res = await fetch(`${apiUrl}/upload`, {
+        const res = await fetch(`${apiUrl}/api/upload`, {
   method: "POST",
   body: formData,
 });
