@@ -60,16 +60,21 @@ export default function UploadPanel({
 
       try {
         setUploadProgress(50);
-        const res = await fetch(`${apiUrl}/upload`, {
-          method: "POST",
-          body: formData,
-        });
-        setUploadProgress(80);
+        const res = await fetch(`${apiUrl}/datasets/upload`, {
+  method: "POST",
+  body: formData,
+});
 
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.detail || "Upload failed");
-        }
+let data;
+try {
+  data = await res.json(); // ✅ read ONLY once
+} catch {
+  data = null;
+}
+
+if (!res.ok) {
+  throw new Error(data?.detail || "Upload failed");
+}
 
         setUploadProgress(100);
         onDatasetUploaded();
