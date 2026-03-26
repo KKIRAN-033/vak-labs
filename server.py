@@ -479,7 +479,7 @@ async def upload_file(file: UploadFile = File(...)):
 
     try:
         contents = await file.read()
-        df = pd.read_excel(io.BytesIO(contents))
+        df = pd.read_excel(io.BytesIO(contents), engine="openpyxl")
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to read Excel file: {str(e)}")
 
