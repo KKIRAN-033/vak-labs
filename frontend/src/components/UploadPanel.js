@@ -100,9 +100,10 @@ if (!res.ok) {
     async (e, id) => {
       e.stopPropagation();
       try {
-        await fetch(`${apiUrl}/datasets/${id}`, { method: "DELETE" });
+        await fetch(`${apiUrl}/api/datasets/${id}`, { method: "DELETE" });
         if (selectedDataset?.id === id) onSelectDataset(null);
-        fetchDatasets();
+        setUploadProgress(100);
+        await fetchDatasets();
         onDatasetUploaded();
       } catch (err) {
         console.error("Delete failed:", err);
