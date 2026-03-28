@@ -1,34 +1,144 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+/* ─── App Container ─── */
+.app-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Manrope', sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+/* ─── Top Bar ─── */
+.top-bar {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 10px 20px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  box-shadow:
+    0 4px 24px -4px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+  white-space: nowrap;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+/* ─── Floating Card ─── */
+.floating-card {
+  position: absolute;
+  bottom: 24px;
+  left: 16px;
+  right: 16px;
+  z-index: 1000;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 20px 24px;
+  box-shadow:
+    0 20px 60px -15px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(226, 232, 240, 0.7);
+  font-family: 'Manrope', sans-serif;
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.App-link {
-    color: #61dafb;
+@media (min-width: 640px) {
+  .floating-card {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    max-width: 420px;
+  }
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Report Button ─── */
+.report-btn {
+  width: 100%;
+  background: #EF4444;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-weight: 700;
+  font-size: 17px;
+  font-family: 'Manrope', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px -6px rgba(239, 68, 68, 0.5);
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.report-btn:hover {
+  background: #DC2626;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px -6px rgba(239, 68, 68, 0.6);
+}
+
+.report-btn:active {
+  transform: scale(0.98);
+}
+
+/* ─── Leaflet Overrides ─── */
+.leaflet-container {
+  height: 100% !important;
+  width: 100% !important;
+  font-family: 'Manrope', sans-serif;
+  z-index: 1;
+}
+
+.leaflet-control-attribution {
+  display: none !important;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.12) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+.leaflet-control-zoom a {
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(8px) !important;
+  color: #0f172a !important;
+  border: none !important;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  font-size: 16px !important;
+}
+
+/* ─── Marker Animations ─── */
+@keyframes markerPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.5);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 4px 24px rgba(245, 158, 11, 0.7);
+  }
 }
