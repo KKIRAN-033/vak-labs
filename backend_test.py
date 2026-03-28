@@ -91,7 +91,7 @@ class ElectionPatrolAPITester:
         )
 
     def test_get_personnel(self):
-        """Test GET /api/personnel - should return 5 officers all with status 'free'"""
+        """Test GET /api/personnel - should return 12 officers all with status 'free'"""
         success, response = self.run_test(
             "Get Personnel",
             "GET",
@@ -101,16 +101,16 @@ class ElectionPatrolAPITester:
         
         if success and isinstance(response, list):
             print(f"   Found {len(response)} officers")
-            if len(response) == 5:
-                print("   ✓ Correct number of officers (5)")
+            if len(response) == 12:
+                print("   ✓ Correct number of officers (12)")
             else:
-                print(f"   ⚠️  Expected 5 officers, got {len(response)}")
+                print(f"   ⚠️  Expected 12 officers, got {len(response)}")
             
             free_officers = [o for o in response if o.get('status') == 'free']
             print(f"   Free officers: {len(free_officers)}")
             
             for officer in response:
-                required_fields = ['id', 'name', 'badge', 'lat', 'lng', 'status', 'avatar']
+                required_fields = ['id', 'name', 'badge', 'rank', 'lat', 'lng', 'status']
                 missing_fields = [field for field in required_fields if field not in officer]
                 if missing_fields:
                     print(f"   ⚠️  Officer {officer.get('id', 'unknown')} missing fields: {missing_fields}")

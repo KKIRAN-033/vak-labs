@@ -72,31 +72,30 @@ def haversine(lat1, lon1, lat2, lon2):
 
 # ─── Seed Data ───
 OFFICERS = [
-    {
-        "id": "off-001", "name": "Officer Rajesh", "badge": "AP-001",
-        "lat": 14.6870, "lng": 77.6080, "status": "free",
-        "avatar": "https://images.pexels.com/photos/7714739/pexels-photo-7714739.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=100"
-    },
-    {
-        "id": "off-002", "name": "Officer Suresh", "badge": "AP-002",
-        "lat": 14.6780, "lng": 77.5950, "status": "free",
-        "avatar": "https://images.pexels.com/photos/7714669/pexels-photo-7714669.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=100"
-    },
-    {
-        "id": "off-003", "name": "Officer Venkat", "badge": "AP-003",
-        "lat": 14.6920, "lng": 77.6120, "status": "free",
-        "avatar": "https://images.pexels.com/photos/7714739/pexels-photo-7714739.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=100"
-    },
-    {
-        "id": "off-004", "name": "Officer Priya", "badge": "AP-004",
-        "lat": 14.6750, "lng": 77.5900, "status": "free",
-        "avatar": "https://images.pexels.com/photos/7714669/pexels-photo-7714669.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=100"
-    },
-    {
-        "id": "off-005", "name": "Officer Kumar", "badge": "AP-005",
-        "lat": 14.6950, "lng": 77.6020, "status": "free",
-        "avatar": "https://images.pexels.com/photos/7714739/pexels-photo-7714739.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=100"
-    },
+    {"id": "off-001", "name": "SI Rajesh Kumar", "badge": "AP-001", "rank": "Sub Inspector",
+     "lat": 14.6870, "lng": 77.6080, "status": "free"},
+    {"id": "off-002", "name": "SI Suresh Reddy", "badge": "AP-002", "rank": "Sub Inspector",
+     "lat": 14.6780, "lng": 77.5950, "status": "free"},
+    {"id": "off-003", "name": "ASI Venkat Rao", "badge": "AP-003", "rank": "Asst Sub Inspector",
+     "lat": 14.6920, "lng": 77.6120, "status": "free"},
+    {"id": "off-004", "name": "CI Priya Sharma", "badge": "AP-004", "rank": "Circle Inspector",
+     "lat": 14.6750, "lng": 77.5900, "status": "free"},
+    {"id": "off-005", "name": "SI Kumar Naidu", "badge": "AP-005", "rank": "Sub Inspector",
+     "lat": 14.6950, "lng": 77.6020, "status": "free"},
+    {"id": "off-006", "name": "ASI Lakshmi Devi", "badge": "AP-006", "rank": "Asst Sub Inspector",
+     "lat": 14.6700, "lng": 77.6050, "status": "free"},
+    {"id": "off-007", "name": "SI Ravi Teja", "badge": "AP-007", "rank": "Sub Inspector",
+     "lat": 14.6840, "lng": 77.5850, "status": "free"},
+    {"id": "off-008", "name": "CI Srinivas Murthy", "badge": "AP-008", "rank": "Circle Inspector",
+     "lat": 14.6900, "lng": 77.6180, "status": "free"},
+    {"id": "off-009", "name": "ASI Anitha Kumari", "badge": "AP-009", "rank": "Asst Sub Inspector",
+     "lat": 14.6680, "lng": 77.6120, "status": "free"},
+    {"id": "off-010", "name": "SI Ramesh Babu", "badge": "AP-010", "rank": "Sub Inspector",
+     "lat": 14.6980, "lng": 77.5950, "status": "free"},
+    {"id": "off-011", "name": "ASI Deepika Reddy", "badge": "AP-011", "rank": "Asst Sub Inspector",
+     "lat": 14.6760, "lng": 77.6150, "status": "free"},
+    {"id": "off-012", "name": "SI Harish Varma", "badge": "AP-012", "rank": "Sub Inspector",
+     "lat": 14.6880, "lng": 77.5920, "status": "free"},
 ]
 
 

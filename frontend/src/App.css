@@ -16,39 +16,41 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 10px 22px;
   border-radius: 50px;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 700;
-  font-size: 14px;
+  font-weight: 800;
+  font-size: 13px;
   color: #0f172a;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   box-shadow:
     0 4px 24px -4px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(0, 0, 0, 0.04);
+    0 0 0 1px rgba(0, 0, 0, 0.03);
   white-space: nowrap;
 }
 
-/* ─── Floating Card ─── */
+/* ─── Floating Card (bottom — for idle/selected/assigned/resolved) ─── */
 .floating-card {
   position: absolute;
   bottom: 24px;
   left: 16px;
   right: 16px;
   z-index: 1000;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 24px;
   padding: 20px 24px;
   box-shadow:
-    0 20px 60px -15px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(226, 232, 240, 0.7);
+    0 20px 60px -15px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.6);
   font-family: 'Manrope', sans-serif;
-  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (min-width: 640px) {
@@ -56,19 +58,48 @@
     left: 0;
     right: 0;
     margin: 0 auto;
-    max-width: 420px;
+    max-width: 400px;
   }
 }
 
+/* ─── Tracking HUD (top-right corner — compact, non-blocking) ─── */
+.tracking-hud {
+  position: absolute;
+  top: 70px;
+  right: 16px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 16px 20px;
+  box-shadow:
+    0 8px 32px -8px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.5);
+  font-family: 'Manrope', sans-serif;
+  width: 220px;
+  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 639px) {
+  .tracking-hud {
+    top: auto;
+    bottom: 24px;
+    right: 16px;
+    left: auto;
+    width: 200px;
+  }
+}
+
+/* ─── Animations ─── */
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 /* ─── Report Button ─── */
@@ -78,9 +109,9 @@
   color: white;
   border: none;
   border-radius: 14px;
-  padding: 16px;
+  padding: 15px;
   font-weight: 700;
-  font-size: 17px;
+  font-size: 16px;
   font-family: 'Manrope', sans-serif;
   display: flex;
   align-items: center;
@@ -98,7 +129,7 @@
 }
 
 .report-btn:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 /* ─── Leaflet Overrides ─── */
@@ -115,13 +146,13 @@
 
 .leaflet-control-zoom {
   border: none !important;
-  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.1) !important;
   border-radius: 12px !important;
   overflow: hidden;
 }
 
 .leaflet-control-zoom a {
-  background: rgba(255, 255, 255, 0.92) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(8px) !important;
   color: #0f172a !important;
   border: none !important;
@@ -131,14 +162,17 @@
   font-size: 16px !important;
 }
 
-/* ─── Marker Animations ─── */
-@keyframes markerPulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.5);
-  }
-  50% {
-    transform: scale(1.08);
-    box-shadow: 0 4px 24px rgba(245, 158, 11, 0.7);
-  }
+/* ─── My Location Pulse ─── */
+.my-loc-pulse {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: rgba(66, 133, 244, 0.2);
+  z-index: 1;
+  animation: locPulse 2s ease-out infinite;
+}
+
+@keyframes locPulse {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
 }

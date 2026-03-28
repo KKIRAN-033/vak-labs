@@ -19,6 +19,7 @@ export default function App() {
   const [phase, setPhase] = useState('idle');
   const [distance, setDistance] = useState(0);
   const [eta, setEta] = useState(0);
+  const [userLocation, setUserLocation] = useState(null);
 
   const intervalRef = useRef(null);
   const officerPosRef = useRef(null);
@@ -26,6 +27,23 @@ export default function App() {
 
   useEffect(() => { officerPosRef.current = officerPosition; }, [officerPosition]);
   useEffect(() => { incidentRef.current = activeIncident; }, [activeIncident]);
+
+  // Geolocation - show user's real location
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        setUserLocation({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          accuracy: pos.coords.accuracy,
+        });
+      },
+      () => console.log('Geolocation not available'),
+      { enableHighAccuracy: true, maximumAge: 10000 }
+    );
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, []);
 
   useEffect(() => {
     fetchOfficers();
@@ -163,6 +181,7 @@ export default function App() {
         activeIncident={activeIncident}
         assignedOfficer={assignedOfficer}
         tracking={phase === 'enroute'}
+        userLocation={userLocation}
       />
 
       <FloatingCard
