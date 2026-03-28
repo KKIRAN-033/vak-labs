@@ -1,33 +1,24 @@
 # Smart Election Patrol & Incident Response System
 
-## Problem Statement
-Police hackathon project - real-time election patrol and incident response system. Full-screen Leaflet map centered on Anantapur, AP, India.
-
 ## Architecture
-- **Backend**: FastAPI + MongoDB + WebSocket (`/api/ws`)
-- **Frontend**: React + Leaflet + Tailwind CSS + Manrope font
-- **Real-time**: LERP interpolation at 80ms intervals
+- **Backend**: FastAPI + MongoDB + WebSocket
+- **Frontend**: React + Leaflet + Tailwind CSS
 
 ## What's Been Implemented (2026-03-28)
-- 12 officers seeded around Anantapur with Indian names, ranks, badges
-- Google Maps-style SVG teardrop pins (no photos) - green=free, red=busy, amber=incident, blue=click
-- Compact glassmorphic tracking HUD at top-right (doesn't block map during tracking)
-- Smooth LERP movement animation
-- Live ETA + Distance (Haversine + 40km/h)
-- Icon-based officer cards (Shield, Radio, Zap icons)
-- Phase-based UI: idle → selected → assigning → assigned → enroute → resolved
+### Iteration 3 — Critical Fixes (Latest)
+- 60fps smooth marker movement via requestAnimationFrame + 1-sec LERP (factor 0.12)
+- Custom Google Maps-style popup card ON THE MAP with officer info + Accept button
+- Top tracking bar: "🚓 0.6 km away | ⏱ ETA: 1.5 min" with live updates
+- Status progression: Responding → Approaching → Almost There → Arrived
+- Premium UI: FAB button, subtle idle hint, compact resolved card
+- Performance: setLatLng only, no marker recreation, no full map re-render
+- Clean code: no unused imports, consolidated components
+### Previous Iterations
+- 12 officers seeded around Anantapur, AP
+- Google Maps-style SVG teardrop pins (green/red/amber/blue)
+- Haversine distance + 40km/h ETA calculation
 - User geolocation with blue pulsing dot
-- Sonner toasts for notifications
-- Professional bottom cards for reporting, top-right HUD for tracking
-
-## Iteration 2 Changes
-- Officers increased from 5 to 12
-- Removed photos from markers and cards — clean SVG icons
-- Tracking HUD moved to compact top-right to not block map view
-- Improved typography and glassmorphism effects
-- Better officer data (ranks: SI, ASI, CI)
 
 ## Backlog
 - P2: Multi-incident parallel tracking
-- P2: Incident categories
-- P3: Officer chat
+- P2: Incident categories (booth capture, violence, EVM tampering)
