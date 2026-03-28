@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, UploadFile, File, HTTPException
+from fastapi import FastAPI, APIRouter, UploadFile, File, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -13,6 +13,8 @@ from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime, timezone
 from collections import Counter, defaultdict
+import asyncio
+import math
 
 import pandas as pd
 
@@ -49,6 +51,138 @@ class ChatResponse(BaseModel):
     response: str
     data: Optional[Any] = None
     query_type: str
+
+
+class IncidentReportRequest(BaseModel):
+    latitude: float
+    longitude: float
+
+
+# ─── Dispatch Tracking State ──────────────────────────────────────────────────
+
+EARTH_RADIUS_KM = 6371
+OFFICER_SPEED_KMH = 40
+OFFICER_METERS_PER_SECOND = (OFFICER_SPEED_KMH * 1000) / 3600
+
+dispatch_state = {
+    "incident": None,
+    "officers": [
+        {"id": "O-101", "name": "Officer Maya Singh", "lat": 28.6148, "lng": 77.2095, "status": "free"},
+        {"id": "O-102", "name": "Officer Liam Carter", "lat": 28.6207, "lng": 77.2171, "status": "free"},
+        {"id": "O-103", "name": "Officer Ava Johnson", "lat": 28.6089, "lng": 77.2246, "status": "busy"},
+    ],
+    "assigned_officer_id": None,
+}
+dispatch_lock = asyncio.Lock()
+dispatch_clients: set[WebSocket] = set()
+dispatch_loop_task: Optional[asyncio.Task] = None
+
+
+def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    d_lat = math.radians(lat2 - lat1)
+    d_lon = math.radians(lon2 - lon1)
+    a = (
+        math.sin(d_lat / 2) ** 2
+        + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(d_lon / 2) ** 2
+    )
+    return 2 * EARTH_RADIUS_KM * math.asin(math.sqrt(a))
+
+
+def interpolate_position(lat1: float, lon1: float, lat2: float, lon2: float, meters: float) -> tuple[float, float]:
+    distance_km = haversine_km(lat1, lon1, lat2, lon2)
+    distance_m = distance_km * 1000
+    if distance_m == 0 or meters >= distance_m:
+        return lat2, lon2
+    ratio = meters / distance_m
+    return lat1 + (lat2 - lat1) * ratio, lon1 + (lon2 - lon1) * ratio
+
+
+def get_dispatch_snapshot() -> Dict[str, Any]:
+    incident = dispatch_state["incident"]
+    officers = [dict(officer) for officer in dispatch_state["officers"]]
+    assigned_id = dispatch_state["assigned_officer_id"]
+    assigned_officer = next((o for o in officers if o["id"] == assigned_id), None)
+    distance_km = None
+    eta_minutes = None
+    live_status = "Assigned" if assigned_officer else "Idle"
+
+    if incident and assigned_officer:
+        distance_km = haversine_km(
+            assigned_officer["lat"],
+            assigned_officer["lng"],
+            incident["lat"],
+            incident["lng"],
+        )
+        eta_minutes = (distance_km / OFFICER_SPEED_KMH) * 60
+        if distance_km <= 0.03:
+            live_status = "Reached"
+        elif distance_km <= 0.1:
+            live_status = "Near"
+        elif assigned_officer["status"] == "busy":
+            live_status = "Moving"
+
+    return {
+        "incident": incident,
+        "officers": officers,
+        "assigned_officer_id": assigned_id,
+        "distance_km": distance_km,
+        "eta_minutes": eta_minutes,
+        "speed_kmh": OFFICER_SPEED_KMH,
+        "status": live_status,
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+    }
+
+
+async def broadcast_dispatch_state():
+    if not dispatch_clients:
+        return
+    payload = get_dispatch_snapshot()
+    stale_clients = []
+    for ws in dispatch_clients:
+        try:
+            await ws.send_json(payload)
+        except Exception:
+            stale_clients.append(ws)
+    for ws in stale_clients:
+        dispatch_clients.discard(ws)
+
+
+def assign_nearest_officer(incident_lat: float, incident_lng: float) -> Optional[Dict[str, Any]]:
+    free_officers = [o for o in dispatch_state["officers"] if o["status"] == "free"]
+    if not free_officers:
+        return None
+    nearest = min(free_officers, key=lambda o: haversine_km(o["lat"], o["lng"], incident_lat, incident_lng))
+    nearest["status"] = "busy"
+    dispatch_state["assigned_officer_id"] = nearest["id"]
+    return nearest
+
+
+async def dispatch_movement_loop():
+    while True:
+        await asyncio.sleep(1)
+        async with dispatch_lock:
+            incident = dispatch_state["incident"]
+            assigned_id = dispatch_state["assigned_officer_id"]
+            if not incident or not assigned_id:
+                continue
+            assigned = next((o for o in dispatch_state["officers"] if o["id"] == assigned_id), None)
+            if not assigned:
+                continue
+            new_lat, new_lng = interpolate_position(
+                assigned["lat"],
+                assigned["lng"],
+                incident["lat"],
+                incident["lng"],
+                OFFICER_METERS_PER_SECOND,
+            )
+            assigned["lat"] = new_lat
+            assigned["lng"] = new_lng
+            remaining_km = haversine_km(assigned["lat"], assigned["lng"], incident["lat"], incident["lng"])
+            if remaining_km <= 0.03:
+                assigned["status"] = "free"
+                dispatch_state["incident"] = None
+                dispatch_state["assigned_officer_id"] = None
+        await broadcast_dispatch_state()
 
 
 # ─── Dataset Type Detection ───────────────────────────────────────────────────
@@ -675,6 +809,35 @@ async def download_sample(dtype: str):
     df.to_excel(tmp.name, index=False)
     return FileResponse(tmp.name, filename=f"sample_{dtype.lower()}_data.xlsx", media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
+@api_router.get("/dispatch/state")
+async def get_dispatch_state():
+    return get_dispatch_snapshot()
+
+
+@api_router.post("/dispatch/report")
+async def report_incident(payload: IncidentReportRequest):
+    async with dispatch_lock:
+        assigned = assign_nearest_officer(payload.latitude, payload.longitude)
+        if not assigned:
+            raise HTTPException(status_code=409, detail="No free officers available")
+        dispatch_state["incident"] = {"lat": payload.latitude, "lng": payload.longitude}
+    await broadcast_dispatch_state()
+    return get_dispatch_snapshot()
+
+
+@app.websocket("/api/dispatch/ws")
+async def dispatch_ws(websocket: WebSocket):
+    await websocket.accept()
+    dispatch_clients.add(websocket)
+    try:
+        await websocket.send_json(get_dispatch_snapshot())
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        dispatch_clients.discard(websocket)
+    except Exception:
+        dispatch_clients.discard(websocket)
+
 
 # ─── App Setup ────────────────────────────────────────────────────────────────
 
@@ -690,4 +853,14 @@ app.add_middleware(
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
+    global dispatch_loop_task
+    if dispatch_loop_task:
+        dispatch_loop_task.cancel()
     client.close()
+
+
+@app.on_event("startup")
+async def startup_dispatch_loop():
+    global dispatch_loop_task
+    if dispatch_loop_task is None or dispatch_loop_task.done():
+        dispatch_loop_task = asyncio.create_task(dispatch_movement_loop())
