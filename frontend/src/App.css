@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
-/* ─── App Container ─── */
+* { box-sizing: border-box; }
+
 .app-container {
   position: relative;
   width: 100vw;
@@ -9,107 +10,97 @@
   font-family: 'Manrope', sans-serif;
 }
 
-/* ─── Top Bar ─── */
+/* ═══════════════════════════════
+   Top Bar
+   ═══════════════════════════════ */
 .top-bar {
   position: absolute;
-  top: 16px;
+  top: 14px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255,255,255,0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  padding: 10px 22px;
+  padding: 8px 18px;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 800;
+  font-size: 12px;
+  color: #0f172a;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 16px -4px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.03);
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════
+   Idle Hint (subtle bottom pill)
+   ═══════════════════════════════ */
+.idle-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(16px);
+  padding: 12px 22px;
   border-radius: 50px;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 800;
   font-size: 13px;
-  color: #0f172a;
-  letter-spacing: -0.01em;
-  box-shadow:
-    0 4px 24px -4px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(0, 0, 0, 0.03);
+  font-weight: 600;
+  color: #64748b;
+  box-shadow: 0 4px 24px -8px rgba(0,0,0,0.1);
+  animation: fadeUp 0.5s ease;
   white-space: nowrap;
 }
+.idle-dot {
+  width: 8px;
+  height: 8px;
+  background: #3B82F6;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
 
-/* ─── Floating Card (bottom — for idle/selected/assigned/resolved) ─── */
-.floating-card {
+/* ═══════════════════════════════
+   Report Card (bottom, selected)
+   ═══════════════════════════════ */
+.report-card {
   position: absolute;
   bottom: 24px;
   left: 16px;
   right: 16px;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255,255,255,0.95);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-radius: 24px;
-  padding: 20px 24px;
-  box-shadow:
-    0 20px 60px -15px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(255, 255, 255, 0.6);
-  font-family: 'Manrope', sans-serif;
-  animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 16px 20px 20px;
+  box-shadow: 0 20px 60px -15px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,255,255,0.6);
+  animation: fadeUp 0.4s cubic-bezier(0.16,1,0.3,1);
 }
-
 @media (min-width: 640px) {
-  .floating-card {
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    max-width: 400px;
-  }
+  .report-card { left:0;right:0;margin:0 auto;max-width:380px; }
 }
-
-/* ─── Tracking HUD (top-right corner — compact, non-blocking) ─── */
-.tracking-hud {
-  position: absolute;
-  top: 70px;
-  right: 16px;
-  z-index: 1000;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 20px;
-  padding: 16px 20px;
-  box-shadow:
-    0 8px 32px -8px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.5);
-  font-family: 'Manrope', sans-serif;
-  width: 220px;
-  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+.report-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #94a3b8;
+  font-family: 'SF Mono', monospace;
+  margin-bottom: 14px;
 }
-
-@media (max-width: 639px) {
-  .tracking-hud {
-    top: auto;
-    bottom: 24px;
-    right: 16px;
-    left: auto;
-    width: 200px;
-  }
-}
-
-/* ─── Animations ─── */
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-/* ─── Report Button ─── */
-.report-btn {
+.fab-btn {
   width: 100%;
   background: #EF4444;
   color: white;
   border: none;
-  border-radius: 14px;
-  padding: 15px;
+  border-radius: 16px;
+  padding: 16px;
   font-weight: 700;
   font-size: 16px;
   font-family: 'Manrope', sans-serif;
@@ -118,61 +109,279 @@
   justify-content: center;
   gap: 10px;
   cursor: pointer;
-  box-shadow: 0 8px 24px -6px rgba(239, 68, 68, 0.5);
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 8px 24px -6px rgba(239,68,68,0.5);
+  transition: background 0.2s, transform 0.12s, box-shadow 0.2s;
+}
+.fab-btn:hover { background:#DC2626; transform:translateY(-1px); box-shadow:0 12px 28px -6px rgba(239,68,68,0.6); }
+.fab-btn:active { transform:scale(0.97); }
+
+/* ═══════════════════════════════
+   Loading Card (assigning spinner)
+   ═══════════════════════════════ */
+.loading-card {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(16px);
+  padding: 14px 24px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  box-shadow: 0 4px 24px -8px rgba(0,0,0,0.1);
+  animation: fadeUp 0.3s ease;
+  white-space: nowrap;
+}
+.loader-ring {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid #E2E8F0;
+  border-top-color: #3B82F6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-.report-btn:hover {
-  background: #DC2626;
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px -6px rgba(239, 68, 68, 0.6);
-}
-
-.report-btn:active {
-  transform: scale(0.97);
-}
-
-/* ─── Leaflet Overrides ─── */
-.leaflet-container {
-  height: 100% !important;
-  width: 100% !important;
+/* ═══════════════════════════════
+   Tracking Bar (top, enroute)
+   ═══════════════════════════════ */
+.tracking-bar {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 50px;
+  padding: 8px 8px 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  box-shadow: 0 4px 32px -8px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.03);
+  animation: fadeDown 0.4s cubic-bezier(0.16,1,0.3,1);
   font-family: 'Manrope', sans-serif;
-  z-index: 1;
+  white-space: nowrap;
 }
-
-.leaflet-control-attribution {
-  display: none !important;
+.tb-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 40px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
-
-.leaflet-control-zoom {
-  border: none !important;
-  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.1) !important;
-  border-radius: 12px !important;
+.tb-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+.tb-metric {
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.tb-emoji { font-size: 14px; }
+.tb-divider {
+  width: 1px;
+  height: 20px;
+  background: #e2e8f0;
+  flex-shrink: 0;
+}
+.tb-officer {
+  padding: 0 14px 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  max-width: 140px;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.leaflet-control-zoom a {
-  background: rgba(255, 255, 255, 0.9) !important;
-  backdrop-filter: blur(8px) !important;
-  color: #0f172a !important;
-  border: none !important;
-  width: 36px !important;
-  height: 36px !important;
-  line-height: 36px !important;
-  font-size: 16px !important;
+/* ═══════════════════════════════
+   Resolved Card (bottom)
+   ═══════════════════════════════ */
+.resolved-card {
+  position: absolute;
+  bottom: 24px;
+  left: 16px;
+  right: 16px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 16px 20px;
+  box-shadow: 0 12px 40px -12px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  animation: fadeUp 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+@media (min-width: 640px) {
+  .resolved-card { left:0;right:0;margin:0 auto;max-width:440px; }
+}
+.rc-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.rc-title { font-weight: 800; font-size: 14px; color: #0f172a; line-height: 1.2; }
+.rc-sub { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+.rc-btn {
+  flex-shrink: 0;
+  background: #0f172a;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 12px;
+  font-family: 'Manrope', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s, transform 0.12s;
+  white-space: nowrap;
+}
+.rc-btn:hover { background:#1e293b; }
+.rc-btn:active { transform:scale(0.97); }
+
+/* ═══════════════════════════════
+   Custom Popup (on-map info card)
+   ═══════════════════════════════ */
+.custom-popup .leaflet-popup-content-wrapper {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 16px 48px -12px rgba(0,0,0,0.2);
+  padding: 0;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+.custom-popup .leaflet-popup-content {
+  margin: 0 !important;
+  width: auto !important;
+  min-width: 240px;
+}
+.custom-popup .leaflet-popup-tip {
+  background: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
 }
 
-/* ─── My Location Pulse ─── */
+.popup-card { padding: 16px 18px; font-family: 'Manrope', sans-serif; }
+.popup-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 12px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #F59E0B;
+  text-transform: uppercase;
+}
+.popup-dot {
+  width: 7px;
+  height: 7px;
+  background: #F59E0B;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+.popup-officer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.popup-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #ECFDF5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.popup-info { min-width: 0; }
+.popup-name { font-weight: 700; font-size: 13px; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.popup-badge { font-size: 11px; color: #94a3b8; }
+.popup-metrics {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+.popup-sep { color: #cbd5e1; margin: 0 6px; }
+.popup-accept-btn {
+  width: 100%;
+  background: #10B981;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 11px;
+  font-weight: 700;
+  font-size: 13px;
+  font-family: 'Manrope', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 16px -4px rgba(16,185,129,0.4);
+  transition: background 0.2s, transform 0.12s;
+}
+.popup-accept-btn:hover { background:#059669; }
+.popup-accept-btn:active { transform:scale(0.97); }
+
+/* ═══════════════════════════════
+   Leaflet Overrides
+   ═══════════════════════════════ */
+.leaflet-container { height:100%!important; width:100%!important; font-family:'Manrope',sans-serif; z-index:1; }
+.leaflet-control-attribution { display:none!important; }
+.leaflet-control-zoom { border:none!important; box-shadow:0 4px 16px -4px rgba(0,0,0,0.1)!important; border-radius:12px!important; overflow:hidden; }
+.leaflet-control-zoom a { background:rgba(255,255,255,0.9)!important; backdrop-filter:blur(8px)!important; color:#0f172a!important; border:none!important; width:36px!important; height:36px!important; line-height:36px!important; font-size:16px!important; }
+
+/* ═══════════════════════════════
+   My Location Pulse
+   ═══════════════════════════════ */
 .my-loc-pulse {
   position: absolute;
   inset: -10px;
   border-radius: 50%;
-  background: rgba(66, 133, 244, 0.2);
+  background: rgba(66,133,244,0.2);
   z-index: 1;
   animation: locPulse 2s ease-out infinite;
 }
 
-@keyframes locPulse {
-  0% { transform: scale(0.8); opacity: 1; }
-  100% { transform: scale(2.2); opacity: 0; }
-}
+/* ═══════════════════════════════
+   Keyframes
+   ═══════════════════════════════ */
+@keyframes fadeUp { from{opacity:0;transform:translateX(-50%) translateY(16px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+@keyframes fadeDown { from{opacity:0;transform:translateX(-50%) translateY(-12px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+@keyframes spin { to{transform:rotate(360deg)} }
+@keyframes locPulse { 0%{transform:scale(0.8);opacity:1} 100%{transform:scale(2.2);opacity:0} }

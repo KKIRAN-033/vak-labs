@@ -104,7 +104,7 @@ async def seed_data():
     count = await db.officers.count_documents({})
     if count == 0:
         await db.officers.insert_many([dict(o) for o in OFFICERS])
-        logger.info("Seeded 5 officers")
+        logger.info("Seeded 12 officers")
     # Reset all officers to free on startup
     await db.officers.update_many({}, {"$set": {"status": "free"}})
     # Clear old incidents
