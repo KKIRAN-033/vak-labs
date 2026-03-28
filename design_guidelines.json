@@ -1,0 +1,123 @@
+{
+  "project_name": "Smart Election Patrol & Incident Response",
+  "theme": "Light",
+  "archetype": "Archetype 4 (Swiss & High-Contrast) + Premium Map UI",
+  "design_philosophy": "Tactical Minimalism. The map is the canvas, UI is the floating control layer. Google Maps-style clarity meets modern premium web design. Extremely fast, zero-clutter, thumb-zone optimized.",
+  "typography": {
+    "headings": "Manrope",
+    "body": "Inter",
+    "numbers": "Inter tabular-nums",
+    "rules": [
+      "Use tracking-tight for all headings.",
+      "Metrics and ETA must use tabular-nums for non-jittery updates.",
+      "Avoid centering text in cards; left-align for quick scanning."
+    ]
+  },
+  "color_palette": {
+    "backgrounds": {
+      "map_layer": "Leaflet default or Carto Light",
+      "surface_card": "#FFFFFF",
+      "surface_overlay": "rgba(255, 255, 255, 0.9)"
+    },
+    "text": {
+      "primary": "#0F172A",
+      "secondary": "#64748B",
+      "accent": "#3B82F6"
+    },
+    "map_entities": {
+      "user_marker": "#3B82F6",
+      "incident_marker": "#F59E0B",
+      "officer_free": "#10B981",
+      "officer_busy": "#EF4444",
+      "path_polyline": "#3B82F6"
+    },
+    "borders": {
+      "subtle": "#E2E8F0"
+    }
+  },
+  "layout_and_spacing": {
+    "container": "100vh 100vw, overflow-hidden",
+    "ui_layer": "Absolute positioned over map, z-[1000]",
+    "bottom_zone": "Primary interactions happen in the bottom 20% of the screen (thumb-zone).",
+    "card_spacing": "p-5 or p-6",
+    "border_radius": "rounded-2xl or rounded-3xl for floating cards"
+  },
+  "components": {
+    "Map": {
+      "type": "Leaflet",
+      "instructions": "Full viewport. Disable zoom controls on mobile, rely on pinch. Map center: Anantapur, AP, India [14.6819, 77.6006]."
+    },
+    "FloatingActionCard": {
+      "type": "Container",
+      "classes": "bg-white rounded-3xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.15)] border border-slate-100 p-6 absolute bottom-6 left-6 right-6 md:left-1/2 md:-translate-x-1/2 md:w-[400px] z-[1000] transition-transform duration-500 ease-out",
+      "instructions": "Used for 'Report Incident' prompt and 'Live Tracking' info. Google Maps-style clean white surface."
+    },
+    "ReportButton": {
+      "type": "Button",
+      "classes": "w-full bg-[#EF4444] hover:bg-[#DC2626] text-white rounded-xl py-4 font-bold text-lg flex items-center justify-center gap-3 shadow-[0_8px_16px_-6px_rgba(239,68,68,0.5)] transition-all active:scale-[0.98]",
+      "instructions": "Must feel massive and clickable. Red signifies emergency/incident reporting."
+    },
+    "LiveTrackingDashboard": {
+      "type": "Widget",
+      "layout": "Flexbox column inside the FloatingActionCard",
+      "classes": "flex flex-col gap-4",
+      "elements": [
+        "Header: 'Officer En Route' with pulsing green dot.",
+        "Metrics Row: ETA (large, bold tabular-nums) and Distance.",
+        "Officer Profile: Small avatar with name 'Officer Rajesh' and badge."
+      ]
+    },
+    "Markers": {
+      "type": "Leaflet divIcon",
+      "User": "<div class='w-5 h-5 bg-blue-500 rounded-full shadow-[0_0_0_6px_rgba(59,130,246,0.3)] border-2 border-white' data-testid='user-marker'></div>",
+      "Incident": "<div class='w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center text-white shadow-xl animate-bounce border-2 border-white' data-testid='incident-marker'><svg/></div>",
+      "Officer_Free": "<div class='w-12 h-12 rounded-full border-4 border-emerald-500 shadow-lg bg-white overflow-hidden relative' data-testid='officer-free-marker'><img src='...' class='w-full h-full object-cover'/></div>",
+      "Officer_Busy": "<div class='w-12 h-12 rounded-full border-4 border-red-500 shadow-lg bg-white overflow-hidden relative' data-testid='officer-busy-marker'><img src='...' class='w-full h-full object-cover'/></div>"
+    },
+    "Polyline": {
+      "type": "SVG Path",
+      "options": "color: '#3B82F6', weight: 4, opacity: 0.8"
+    }
+  },
+  "animations": {
+    "officer_movement": "Implement smooth linear interpolation (LERP) for marker movement between coordinate updates. Calculate step delta and update marker position iteratively over time.",
+    "ui_mount": "Cards must slide up from the bottom on mount, creating a fluid, app-like feel.",
+    "pulse": "Use Tailwind animate-pulse or ping for critical status indicators."
+  },
+  "media": {
+    "images": [
+      {
+        "category": "officer_avatar_1",
+        "url": "https://images.pexels.com/photos/7714739/pexels-photo-7714739.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=100",
+        "description": "Smiling police officer in uniform"
+      },
+      {
+        "category": "officer_avatar_2",
+        "url": "https://images.pexels.com/photos/7714669/pexels-photo-7714669.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=100",
+        "description": "Police officer in uniform with sunglasses"
+      }
+    ],
+    "icons": "Use lucide-react. Required: MapPin, Siren/Flame, User, Navigation, CheckCircle2."
+  },
+  "testing_attributes": {
+    "instructions": "All interactive and key informational elements MUST include a data-testid attribute.",
+    "examples": [
+      "data-testid='map-container'",
+      "data-testid='report-incident-btn'",
+      "data-testid='live-eta-display'",
+      "data-testid='live-distance-display'",
+      "data-testid='incident-marker'",
+      "data-testid='officer-marker'"
+    ]
+  },
+  "instructions_to_main_agent": [
+    "1. Initialize full-screen Leaflet map centered on Anantapur, AP (14.6819, 77.6006).",
+    "2. Implement click-to-place-incident functionality. Show bottom FloatingActionCard to confirm report.",
+    "3. On 'Report Incident' click: simulate assignment. Find/create a dummy officer marker (Green), turn it Red (Busy), and start movement.",
+    "4. For movement: calculate a direct line or polyline to the incident. Use requestAnimationFrame or setInterval to incrementally update the officer's LatLng (smooth LERP).",
+    "5. Continuously calculate remaining distance via map.distance(). Display live ETA and Distance in the FloatingActionCard.",
+    "6. Draw a Polyline from officer to incident. Trim/update it as the officer moves.",
+    "7. When distance < 20m, resolve incident, reset state, show success toast.",
+    "8. Strictly follow the Google Maps premium styling: rounded-3xl cards, subtle border, deep shadows, no clutter. UI should make the user want to select it instantly."
+  ]
+}
